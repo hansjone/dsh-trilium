@@ -1,0 +1,61 @@
+/** Locale copy for the dsh-trilium surfaces (Chinese only by decision). */
+
+/** Chinese copy (the plugin's UI language). */
+export const zh = {
+  // shared settings-card chrome (PluginSettingsCard reads these)
+  'settings.expand': '展开设置',
+  'settings.collapse': '收起设置',
+  'settings.notExposed': '当前 DSH 版本未向设置页暴露本插件的配置命名空间，表单不可用。可编辑 ~/.dsh/settings.yaml 直接配置后重启。',
+  'settings.unsaved': '未保存',
+  'settings.readOnly': '当前部署的设置只读。',
+  'settings.saveFailed': '部署未接受这些值，已保留供你修改。',
+  'settings.discard': '放弃',
+  'settings.save': '保存',
+  'settings.saved': '已保存 ✓',
+  'settings.saving': '保存中…',
+  'settings.overridden': '已覆盖',
+  'settings.reset': '恢复默认',
+  'settings.inherit': '继承',
+  'settings.on': '开',
+  'settings.off': '关',
+  'settings.invalidNumber': '请输入数字，留空则使用默认值。',
+  // dsh-trilium card copy
+  'settings.title': 'Trilium 记忆库',
+  'settings.description': 'ETAPI 连接与记忆行为：服务器地址、token、默认记忆目录、自动注入等',
+  'settings.baseUrl': '服务器地址 (ETAPI base URL)',
+  'settings.baseUrlHint': '例如 https://your-host/etapi',
+  'settings.token': 'ETAPI token',
+  'settings.tokenHint': '在 Trilium 的 Options → ETAPI 生成；留空保存则保持原值不变',
+  'settings.memoryNoteId': '默认记忆目录 noteId',
+  'settings.memoryNoteIdHint': 'AI 记忆默认写入此目录（留空则用 root 根笔记）',
+  'settings.timeoutMs': '请求超时（毫秒）',
+  'settings.timeoutMsHint': '默认 15000（15 秒）',
+  'settings.autoInject': '会话开始自动注入记忆索引',
+  'settings.autoInjectHint': '把记忆目录索引摘要注入每次会话开头，可关闭',
+  'settings.deleteConfirm': '删除笔记需 confirm 确认',
+  'settings.deleteConfirmHint': '删除笔记进回收站，可恢复',
+  'settings.announce': '在系统提示中声明本插件',
+  'settings.announceHint': '向 agent 说明本插件的能力与记忆规则',
+  'settings.enabled': '启用插件',
+  'settings.enabledHint': '总开关（工具、路由、提示段）',
+  'settings.test': '测试连接',
+  'settings.testing': '测试中…',
+  'settings.testOk': '连接成功：',
+  'settings.testFail': '连接失败：',
+  // sidebar + panel
+  'entry.label': 'Trilium',
+  'entry.tooltip': 'Trilium 笔记浏览器',
+  'panel.searchPlaceholder': '搜索笔记（Trilium 语法）…',
+  'panel.searching': '搜索中…',
+  'panel.noResults': '（无结果）',
+  'panel.error': '错误：',
+  'panel.loading': '加载中…',
+  'panel.empty': '（空）',
+  'panel.back': '← 返回',
+  'panel.contentEmpty': '（无内容）',
+  'panel.notConfigured': '尚未配置 Trilium：请在 设置 → 插件 → Trilium 记忆库 中填写服务器地址与 token。',
+  'panel.openSettings': '打开设置',
+}
+
+/** Locale key union. */
+export type TriliumKey = keyof typeof zh

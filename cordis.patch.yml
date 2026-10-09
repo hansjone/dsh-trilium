@@ -1,0 +1,8 @@
+# dsh-trilium bundle patch: inserts the dual-face plugin row into the web
+# profile roster. Activated with `dsh plugin --profile web add .` (or a
+# github: / link: spec) — the node half runs in the host process (ETAPI
+# client, agent tools, config store, /api/dsh-trilium routes), and the
+# dsh.client declaration loads the browser half (settings card + sidebar).
+- insert:
+    - id: trilium
+      name: 'dsh-trilium'
