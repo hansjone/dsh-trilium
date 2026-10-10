@@ -1,7 +1,7 @@
 # dsh-trilium
 
 [![npm](https://img.shields.io/npm/v/dsh-trilium)](https://www.npmjs.com/package/dsh-trilium)
-[![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.0--rc.7%20%3C0.2.0-5b8def)](https://github.com/deepseek-ai/deepseek-harness)
+[![DSH](https://img.shields.io/badge/DSH-%3E%3D0.2.0--rc.2-5b8def)](https://github.com/deepseek-ai/deepseek-harness)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 ![awesome · DSH plugin](https://awesome-dsh-plugin.com/badge.svg)
 ![CI](https://github.com/MineRPi/dsh-trilium/actions/workflows/ci.yml/badge.svg)
@@ -23,7 +23,7 @@ report workflow, attachments, calendar notes, backups, and a settings card.
   the finished report with `startDate`/`endDate` labels.
 - **Attachments & calendar**: `trilium_attachment`, `trilium_calendar`.
 - **Backup & migration**: `trilium_backup`, `trilium_export`, `trilium_import`.
-- **Settings card**: 设置 → 插件 → 可配置 (server URL, token, memory directory,
+- **Settings page**: 设置 → Trilium 记忆库 (server URL, token, memory directory,
   switches, connection test).
 - **Safe by default**: config in `~/.dsh/dsh-trilium.json` (0600); token never
   enters cordis.yml or the model context; deletes require `confirm`.
@@ -56,7 +56,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:3080/api/dsh-trilium/c
 
 ## Requirements
 
-- DSH `>=0.1.0-rc.7 <0.2.0`, Node `^22.19.0 || >=24.0.0`
+- DSH `>=0.2.0-rc.2` (Desktop / web; `settings.section` + open peer `*`), Node `>=20`
 - Trilium with ETAPI enabled (TriliumNext 0.10x+ or classic Trilium)
 
 ## Development

@@ -53,7 +53,7 @@ export const zh = {
   'panel.empty': '（空）',
   'panel.back': '← 返回',
   'panel.contentEmpty': '（无内容）',
-  'panel.notConfigured': '尚未配置 Trilium：请在 设置 → 插件 → Trilium 记忆库 中填写服务器地址与 token。',
+  'panel.notConfigured': '尚未配置 Trilium：请在 设置 → Trilium 记忆库 中填写服务器地址与 token。',
   'panel.openSettings': '打开设置',
 }
 

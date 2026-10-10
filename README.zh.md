@@ -1,7 +1,7 @@
 # dsh-trilium
 
 [![npm](https://img.shields.io/npm/v/dsh-trilium)](https://www.npmjs.com/package/dsh-trilium)
-[![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.0--rc.7%20%3C0.2.0-5b8def)](https://github.com/deepseek-ai/deepseek-harness)
+[![DSH](https://img.shields.io/badge/DSH-%3E%3D0.2.0--rc.2-5b8def)](https://github.com/deepseek-ai/deepseek-harness)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 ![awesome · DSH plugin](https://awesome-dsh-plugin.com/badge.svg)
 ![CI](https://github.com/MineRPi/dsh-trilium/actions/workflows/ci.yml/badge.svg)
@@ -22,7 +22,7 @@ DSH Web GUI 的 **Trilium 记忆知识库插件**：通过 ETAPI 把 Trilium 笔
 - **附件**：`trilium_attachment` 上传/下载/列出笔记附件（图片、文件）
 - **日历笔记**：`trilium_calendar` 获取（自动创建）day/week/month/year/inbox 日记笔记
 - **备份与迁移**：`trilium_backup` 数据库备份、`trilium_export`/`trilium_import` 子树导出导入
-- **独立设置卡片**：设置 → 插件 → 可配置（服务器地址、token、记忆目录、行为开关、测试连接）
+- **独立设置页**：设置 → Trilium 记忆库（服务器地址、token、记忆目录、行为开关、测试连接）
 - **安全**：配置落盘 `~/.dsh/dsh-trilium.json`（权限 0600），token 不进入 cordis.yml、
   不回显给模型；删除笔记需 confirm 确认（软删进回收站可恢复）
 
@@ -36,8 +36,8 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:3080/api/dsh-trilium/c
 
 ## 兼容性
 
-- DSH：`>=0.1.0-rc.7 <0.2.0`（Profile Bundle + 嵌套 `dsh.client` 契约）
-- Node.js：`^22.19.0 || >=24.0.0`
+- DSH：`>=0.2.0-rc.2`（Desktop / web；`settings.section` + peer `*`）
+- Node.js：`>=20`
 - Trilium：ETAPI 服务（TriliumNext 0.10x+，普通 Trilium 亦可）
 
 ## 安装
@@ -62,7 +62,7 @@ dsh plugin --profile web add github:MineRPi/dsh-trilium
 
 ## 使用
 
-1. **配置**：打开 设置 → 插件 → 可配置 → Trilium 记忆库，填入服务器地址
+1. **配置**：打开 设置 → Trilium 记忆库，填入服务器地址
    （如 `https://your-host/etapi`）与 ETAPI token（Trilium 的 Options → ETAPI 生成），
    点「测试连接」验证，再「保存」。
 2. **记忆**：告诉 agent「记住 XXX」或直接使用 `trilium_remember`；回忆时 agent 会先查
@@ -120,7 +120,7 @@ npm test            # node --test tests/
 
 ## 上架状态
 
-- npm：`dsh-trilium@0.1.2` 已发布 ✅
+- npm：`dsh-trilium@0.2.0`（适配 DSH Desktop 0.2.x）
 - awesome-dsh-plugin PR：[#1045](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/1045) 已提交，等待合并（收录中）
 - 收录流程：发布 npm → 在 `data/plugins/` 加 YAML 条目 → 运行
   `node scripts/generate-readme.mjs` 生成双 README → 提 PR → 合并后

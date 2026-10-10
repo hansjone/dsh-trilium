@@ -171,10 +171,10 @@ export function apply(ctx: Context, config?: Config): void {
     )
   }
 
-  // Register the settings namespace so the plugin-config tab dispatches our
-  // settings card (settings.plugin.item is keyed by namespace). The actual
-  // connection values live in ~/.dsh/dsh-trilium.json; the card reads/writes
-  // them through the /api/dsh-trilium routes.
+  // Follow the host Config row (enabled / announceToAgent). The ETAPI
+  // connection values live in ~/.dsh/dsh-trilium.json; the browser settings
+  // section (settings.section id=trilium) reads/writes them through
+  // /api/dsh-trilium routes.
   // DSH ≥0.1.2: installSection on the settings provider.
   // DSH ≥0.1.7 / 0.2.0: no installSection — Config projection via describe().
   ctx.inject(['settings'], (settingsCtx) => {

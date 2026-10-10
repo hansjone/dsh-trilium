@@ -1,16 +1,20 @@
 /**
  * Browser-half entry for dsh-trilium — runs inside the dsh web GUI.
  *
- * Registers the locale dictionaries and one plugin settings card
- * (settings.plugin.item, inside 设置 → 插件 → 可配置). The card reads/writes
- * the host JSON store through the /api/dsh-trilium routes (no
- * settings-namespace allowlist needed). Failure policy: mounting problems are
- * logged, never thrown — an external plugin must not take the GUI down.
+ * Surfaces (matching dsh-search-mcp / netxops on Desktop 0.2):
+ * - Always register `settings.section` (Settings sidebar).
+ * - Do NOT use `settings.plugin.item` — missing on Desktop 0.2 and kills boot.
+ * - Hard-inject only `slots` + `locale` (never `dsh-client-runtime` /
+ *   `settingsScope` — removed in 0.2 and cause loud client-module failure).
+ *
+ * The card reads/writes the host JSON store through the /api/dsh-trilium
+ * routes (no settings-namespace allowlist needed). Failure policy: mounting
+ * problems are logged, never thrown — an external plugin must not take the
+ * GUI down.
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-slots'
-// Type-only: pulls the settings-surface SlotMap merge (settings.section).
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 import { TriliumApi } from './api.ts'
 import { zh, type TriliumKey } from './locales.ts'
@@ -19,27 +23,25 @@ import { TriliumSettingsCard, type TriliumSettingsFace } from './TriliumSettings
 /** Locale namespace this plugin owns. */
 const NS = 'dsh-trilium'
 
+/**
+ * Settings sidebar section id. Keep distinct from the host Config namespace
+ * `dsh-trilium` — colliding ids silently fail register and the nav entry
+ * disappears (same lesson as dsh-search-mcp).
+ */
+const SECTION_ID = 'trilium'
+
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** dsh-trilium surface copy. */
     'dsh-trilium': TriliumKey
   }
-
-  interface SlotMap {
-    /**
-     * One plugin's card inside the plugin configuration section
-     * (设置 → 插件 → 可配置). Declared here because this package does not
-     * depend on the settings-plugins presentation package.
-     */
-    'settings.plugin.item': { kind: 'keyed'; scope: 'root'; owner: SettingsPluginItemOwnerProps }
-  }
 }
 
-/** Owner share of a plugin card (the section supplies nothing). */
-export interface SettingsPluginItemOwnerProps {
-  /** Marker field: card owner props are intentionally empty. */
-  children?: never
-}/** Required services (fiber inject waiting — the runtime must be up first). */
+/**
+ * Services that exist on every supported DSH client roster.
+ * Do not list removed 0.1 packages (dsh-client-runtime) in package.json
+ * `dsh.client.inject` — client-modules treats missing nodes as loud failure.
+ */
 export const inject = ['slots', 'locale']
 
 /** Type-only surface. */
@@ -54,22 +56,27 @@ export function apply(ctx: ClientContext): void {
   ctx.effect(() => ctx.locale.register(NS, { zh, en: zh }), 'dsh-trilium: dictionaries')
 
   const api = new TriliumApi()
+  const t = ctx.locale.bind(NS) as (key: TriliumKey) => string
 
-  // One plugin settings card inside 设置 → 插件 → 可配置 (settings.plugin.item),
-  // side by side with the built-in cards and third-party cards like 语音输入.
-  // Reads/writes the host JSON store directly through the
-  // /api/dsh-trilium/config routes (no settings-namespace allowlist needed).
-  // rc7: settings.plugin.item is keyed by the settings namespace; the Host
-  // serves 'dsh-trilium' via installSettingsSection and the plugin-config tab
-  // dispatches this card for that key.
-  const disposeSettings = ctx.slots.inject('settings.plugin.item', () => ctx.slots.register({
-    name: 'settings.plugin.item',
-    key: 'dsh-trilium',
-    locale: NS,
-    inject: (): TriliumSettingsFace => ({ api }),
-  }, TriliumSettingsCard))
-
-  // Note browsing is done through the trilium_* agent tools; this client half
-  // intentionally mounts only the settings card (no sidebar panel).
-  ctx.effect(() => disposeSettings, 'dsh-trilium: ui mounts')
+  // Settings sidebar — unconditional, same pattern as dsh-search-mcp / netxops.
+  // Reads/writes ~/.dsh/dsh-trilium.json via /api/dsh-trilium/config.
+  try {
+    ctx.slots.inject('settings.section', () => {
+      try {
+        return ctx.slots.register({
+          name: 'settings.section',
+          id: SECTION_ID,
+          order: 28,
+          label: () => t('settings.title'),
+          locale: NS,
+          inject: (): TriliumSettingsFace => ({ api }),
+        }, TriliumSettingsCard)
+      } catch (error) {
+        ctx.logger?.error?.('dsh-trilium: settings.section register failed: %s', error)
+        return () => {}
+      }
+    })
+  } catch (error) {
+    ctx.logger?.warn?.('dsh-trilium: settings.section unavailable: %s', error)
+  }
 }
